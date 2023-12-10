@@ -11,11 +11,11 @@ self.addEventListener('install',
 	    function(cacheInstance)
 	    {
 	    return cacheInstance.addAll(filesList);
-	    };
+	    }
 	    )
 	);
 	self.skipWaiting();
-	};
+	}
 );
 
 // if cannot fetch files, use locals
@@ -30,6 +30,6 @@ alert("adding fetch event");
 		}
 	    )
 	);
-	};
+	}
 );
 
