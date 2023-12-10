@@ -1,5 +1,5 @@
 var cacheName = 'noter';
-var filesList = [ '/', '/index.html', '/css/style.css', '/js/main.js' ];
+var filesList = [ '/noter/', '/noter/index.html', '/noter/css/style.css', '/noter/js/main.js' ];
 
 // install the app by catching all files
 self.addEventListener('install', 
