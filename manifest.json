@@ -2,7 +2,7 @@
     "name": "Noter",
     "short_name": "Noter",
     "icons": [{
-          "src": "images/noter-icon-128.png",
+            "src": "images/noter-icon-128.png",
             "sizes": "128x128",
             "type": "image/png"
         }, {
@@ -11,7 +11,7 @@
             "type": "image/png"
         }],
     "lang": "en-US",
-    "start_url": "/index.html",
+    "start_url": "/noter/index.html",
     "display": "standalone",
     "background_color": "white",
     "theme_color": "white"

@@ -4,7 +4,7 @@ window.onload = function()
     if ("serviceWorker" in navigator)
     {
         alert("registering service worker");
-        navigator.serviceWorker.register('./sw.js');
+        navigator.serviceWorker.register('/noter/sw.js');
     };
 };
 
