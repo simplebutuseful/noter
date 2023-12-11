@@ -17,16 +17,16 @@
     <script src="js/main.js"></script>
 </head>
 <body class="">
-    Note category
     <br>
-    <input type="text" name="name" id="note-category" class="" value="" />
-    <br>
-    Note text
+    <select name="note-category" id="note-category" class="">
+        <option value="Routine">Routine</option>
+        <option value="Task">Task</option>
+    </select>
     <br>
     <input type="text" name="name" id="note-text" class="" value="" />
     <button class="" type="button" onclick="addNote()">add note</button>
     <div id="notes-printed">
-    --
+    No notes yet...
     </div>
 </body>
 </html>
