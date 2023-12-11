@@ -12,13 +12,13 @@ var delimiter="%25%25%25%25";
 var delimiterstr="%%%%";
 class Note
 {
-    constructor(number,type,text)
+    constructor(number,type,text,isdone,tobedeleted)
     {
         this.number=number;
         this.type=type;
         this.text=text;
-        this.isdone=false;
-        this.tobedeleted=false;
+        this.isdone=(isdone=="true");
+        this.tobedeleted=(tobedeleted=="true");
     };
     getName()
     {
@@ -75,7 +75,12 @@ class Note
         var date = new Date();
         date.setTime(date.getTime() + (days*24*60*60*1000));
         var expires = ";expires="+date.toUTCString();
-        document.cookie = "note"+this.number+"="+this.type+delimiter+this.text+delimiter+expires+";path=/";
+        document.cookie = "note"+this.number+"="
+	+this.type+delimiter
+	+this.text+delimiter
+	+this.isdone+delimiter
+	+this.tobedeleted+delimiter
+	+expires+";path=/";
     };
 };
 
@@ -94,7 +99,6 @@ function clearNote(arg)
 {
     var i=Number(arg)-1;
     AllNotes[i].tobedeleted=!(AllNotes[i].tobedeleted);
-    AllNotes[i].isdone=!(AllNotes[i].isdone);
     AllNotes[i].shade();
     AllNotes[i].save();
 };
@@ -122,8 +126,8 @@ function loadNotes()
         if(f>0){
             s=dataArray[i].substr(f+1);
             var ss = s.split(delimiterstr);
-                if(ss.length>=2){
-                    var temp = new Note(notenum,ss[0],ss[1]);
+                if(ss.length>=4){
+                    var temp = new Note(notenum,ss[0],ss[1],ss[2],ss[3]);
                     AllNotes.push(temp);
                     notenum++;
                 };
@@ -144,7 +148,7 @@ function loadData()
 function resetRoutines()
 {
     loadNotes();
-    for(var i=0; i<AllNotes ;i++){
+    for(var i=0; i<AllNotes.length ;i++){
         if(AllNotes[i].type=="Routine")
         {
         AllNotes[i].isdone=false;
@@ -160,7 +164,7 @@ function addNote()
     //add new note
     var category = document.getElementById("note-category").value;
     var text = document.getElementById("note-text").value;
-    tmp = new Note(notenum,category,text);
+    tmp = new Note(notenum,category,text,false,false);
     AllNotes.push(tmp);
 
     //print all notes
