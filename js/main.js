@@ -27,15 +27,20 @@ class Note
     };
     shade()
     {
-        if( this.isdone==true){
-            var divname=this.getName();
-            var obj = document.getElementById(divname);
-            obj.className="done";
-        };
         if( this.isdone==false){
             var divname=this.getName();
             var obj = document.getElementById(divname);
             obj.className="";
+        };
+        if( this.type=="Routine"){
+            var divname=this.getName();
+            var obj = document.getElementById(divname);
+            obj.className="routine";
+        };
+        if( this.isdone==true){
+            var divname=this.getName();
+            var obj = document.getElementById(divname);
+            obj.className="done";
         };
         if( this.tobedeleted==true){
             var divname=this.getName();
@@ -46,7 +51,8 @@ class Note
     show()
     {
         var divname=this.getName();
-        var divstart="<div id=\""+divname+"\">";
+        var routineclass="";
+        var divstart="<div id=\""+divname+"\" >";
         var notetitle="Note "+this.number+" ";
         var notetype=""+this.type+"<br>";
         var notetext=" "+this.text+" ";
@@ -76,11 +82,11 @@ class Note
         date.setTime(date.getTime() + (days*24*60*60*1000));
         var expires = ";expires="+date.toUTCString();
         document.cookie = "note"+this.number+"="
-	+this.type+delimiter
-	+this.text+delimiter
-	+this.isdone+delimiter
-	+this.tobedeleted+delimiter
-	+expires+";path=/";
+    +this.type+delimiter
+    +this.text+delimiter
+    +this.isdone+delimiter
+    +this.tobedeleted+delimiter
+    +expires+";path=/";
     };
 };
 

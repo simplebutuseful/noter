@@ -24,6 +24,9 @@ button{
     border: 1px solid #30d030;
     margin-bottom:1em;
 }
+.routine{
+    color: #40d040;
+}
 .done{
     text-decoration: line-through;
     color: #707070;
