@@ -14,16 +14,21 @@ select,input, button{
     padding:0.5em;
     margin: 2px;
     border-radius: 0.5em;
-    border: 1px solid #a0a0a0;
 }
 select,input{
+    border: 1px solid #a0a0a0;
     background-color: rgba(255,255,255,0.1);
 }
 button{
     background-color: rgba(255,255,255,0.1);
+    border: 1px solid #30d030;
     margin-bottom:1em;
 }
 .done{
     text-decoration: line-through;
     color: #707070;
+}
+.tobedeleted{
+    text-decoration: line-through;
+    color: #d04040;
 }

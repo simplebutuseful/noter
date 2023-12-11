@@ -8,6 +8,8 @@ window.onload = function()
 };
 
 //class containing a single note entry
+var delimiter="%25%25%25%25";
+var delimiterstr="%%%%";
 class Note
 {
     constructor(number,type,text)
@@ -16,6 +18,7 @@ class Note
         this.type=type;
         this.text=text;
         this.isdone=false;
+        this.tobedeleted=false;
     };
     getName()
     {
@@ -34,6 +37,11 @@ class Note
             var obj = document.getElementById(divname);
             obj.className="";
         };
+        if( this.tobedeleted==true){
+            var divname=this.getName();
+            var obj = document.getElementById(divname);
+            obj.className="tobedeleted";
+        };
     };
     show()
     {
@@ -44,15 +52,30 @@ class Note
         var notetext=" "+this.text+" ";
         var divend="</div>";
         var obj = document.getElementById("notes-printed");
-        var button = "<div><button type=\"button\" onclick=\"fulfillNote("+this.number+")\">check</button></div>";
+        var button = "<div><button type=\"button\" onclick=\"fulfillNote("+this.number+")\">check</button>";
+        var buttonRemove = "<button type=\"button\" onclick=\"clearNote("+this.number+")\">forget</button></div>";
         obj.innerHTML+=
             divstart
             //+notetitle
             +notetype
             +notetext
             +divend
-            +button;
-    this.shade();
+            +button
+            +buttonRemove;
+        this.shade();
+    };
+    save()
+    {
+        var days=1;
+        if(this.tobedeleted==false){
+        };
+        if(this.tobedeleted==true){
+            days=-1;
+        };
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        var expires = ";expires="+date.toUTCString();
+        document.cookie = "note"+this.number+"="+this.type+delimiter+this.text+delimiter+expires+";path=/";
     };
 };
 
@@ -64,6 +87,16 @@ function fulfillNote(arg)
     var i=Number(arg)-1;
     AllNotes[i].isdone=!(AllNotes[i].isdone);
     AllNotes[i].shade();
+    AllNotes[i].save();
+};
+
+function clearNote(arg)
+{
+    var i=Number(arg)-1;
+    AllNotes[i].tobedeleted=!(AllNotes[i].tobedeleted);
+    AllNotes[i].isdone=!(AllNotes[i].isdone);
+    AllNotes[i].shade();
+    AllNotes[i].save();
 };
 
 //print all notes in the document
@@ -74,8 +107,56 @@ function printNotes(Notes)
         AllNotes[i].show();
     }
 }
+function showCookies(){
+    var data = decodeURIComponent(document.cookie);
+    alert(data);
+}
+function loadNotes()
+{
+    notenum=1;
+    var data = decodeURIComponent(document.cookie);
+    var dataArray = data.split(';');
+    AllNotes=[];
+    for(var i=0; i<dataArray.length ;i++){
+        var f=dataArray[i].indexOf("=");
+        if(f>0){
+            s=dataArray[i].substr(f+1);
+            var ss = s.split(delimiterstr);
+                if(ss.length>=2){
+                    var temp = new Note(notenum,ss[0],ss[1]);
+                    AllNotes.push(temp);
+                    notenum++;
+                };
+        };
+    }
+}
+function saveNotes()
+{
+    for(var i=0; i<AllNotes.length ;i++){
+        AllNotes[i].save();
+    }
+}
+function loadData()
+{
+    loadNotes();
+    printNotes(AllNotes);
+}
+function resetRoutines()
+{
+    loadNotes();
+    for(var i=0; i<AllNotes ;i++){
+        if(AllNotes[i].type=="Routine")
+        {
+        AllNotes[i].isdone=false;
+        };
+    }
+    saveNotes();
+    printNotes(AllNotes);
+}
 function addNote()
 {
+    //load notes
+    loadNotes();
     //add new note
     var category = document.getElementById("note-category").value;
     var text = document.getElementById("note-text").value;
@@ -84,10 +165,8 @@ function addNote()
 
     //print all notes
     printNotes(AllNotes);
+    saveNotes(AllNotes);
 
-    //document.cookie = "note"+notenum+"="+category+text;
-    //var data = decodeURIComponent(document.cookie);
-    //alert(data);
+    //clear user input
     document.getElementById("note-text").value="";
-    notenum++;
 }

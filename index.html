@@ -19,12 +19,15 @@
 <body class="">
     <br>
     <select name="note-category" id="note-category" class="">
-        <option value="Routine">Routine</option>
         <option value="Task">Task</option>
+        <option value="Routine">Routine</option>
     </select>
     <br>
     <input type="text" name="name" id="note-text" class="" value="" />
+    <br>
     <button class="" type="button" onclick="addNote()">add note</button>
+    <button class="" type="button" onclick="loadData()">load notes</button>
+    <button class="" type="button" onclick="resetRoutines()">reset routines</button>
     <div id="notes-printed">
     No notes yet...
     </div>
