@@ -5,6 +5,7 @@ window.onload = function()
     {
         navigator.serviceWorker.register('/noter/sw.js');
     };
+    loadData();
 };
 
 //class containing a single note entry
@@ -54,12 +55,13 @@ class Note
         var routineclass="";
         var divstart="<div id=\""+divname+"\" >";
         var notetitle="Note "+this.number+" ";
-        var notetype=""+this.type+"<br>";
+        var notetype=""+this.type+": ";
         var notetext=" "+this.text+" ";
         var divend="</div>";
         var obj = document.getElementById("notes-printed");
         var button = "<div><button type=\"button\" onclick=\"fulfillNote("+this.number+")\">check</button>";
-        var buttonRemove = "<button type=\"button\" onclick=\"clearNote("+this.number+")\">forget</button></div>";
+        var buttonRemove = "<button type=\"button\" onclick=\"clearNote("+this.number+")\">forget</button>";
+        var buttonTop = "<button type=\"button\" onclick=\"toTop("+this.number+")\">to top</button></div>";
         obj.innerHTML+=
             divstart
             //+notetitle
@@ -67,7 +69,8 @@ class Note
             +notetext
             +divend
             +button
-            +buttonRemove;
+            +buttonRemove
+            +buttonTop;
         this.shade();
     };
     save()
@@ -107,6 +110,26 @@ function clearNote(arg)
     AllNotes[i].tobedeleted=!(AllNotes[i].tobedeleted);
     AllNotes[i].shade();
     AllNotes[i].save();
+};
+function toTop(arg)
+{
+    var i=Number(arg)-1;
+    const TempNotes = []; 
+    for(var j=0; j<AllNotes.length ;j++){
+	    var element=AllNotes[j];
+	    TempNotes.push(element);
+    }
+    var s=AllNotes.length-1;
+    for(var j=0, k=0; k<AllNotes.length ;j++,k++){
+	    AllNotes[j]=TempNotes[k];
+	    if(j==i){
+		    AllNotes[s]=TempNotes[k];
+		    j--;
+		    i=-1;//avoid standing in this event
+	    };
+    }
+    saveNotes();
+    loadData();
 };
 
 //print all notes in the document
@@ -149,6 +172,7 @@ function saveNotes()
 function loadData()
 {
     loadNotes();
+    saveNotes();
     printNotes(AllNotes);
 }
 function resetRoutines()
